@@ -105,7 +105,14 @@ $(document).ready(function(){
 
             generateRowByColor(0,rowColors);
 
+            if(lines<0)
+            {
+                lines = 0;
+                clearInterval(blockCreator);
+            }
+
             updateLabels();
+
         }
 
         else
