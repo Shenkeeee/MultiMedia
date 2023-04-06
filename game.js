@@ -8,7 +8,7 @@ $(document).ready(function(){
     let blockCreator = 0;
     let colors = ["blue", "red", "green"];
     let lines = 10;
-    let level= 1;
+    let level = 1;
     let score = 0;
     let blocks = [ ];
 
@@ -16,56 +16,93 @@ $(document).ready(function(){
     let rows = 0;
 
 
-    $("#start").click(function ()
-    {
-        // $("#start").text("Restart");
+    $("#start").click(function () {
+        initialise();
+    });
 
-        // $("#pause").show();
+    $("#end").click(function () {
+        gameOn = false;
+        $("#start").show();
+        $("#end").hide();
+        $("#nextLevel").hide();
+        $("#gameOver").hide();
+        $("#playAgain").hide();
+
+        resetVar();
+        handleGameOver();
+
+    });
+
+    $("#nextLevel").click(function () {
+        level += 1;
+        $("#nextLevel").hide();
+
+        // setting the new lines size
+        lines = Math.floor(level * 10 / 1.6);
+        blockCreator = setInterval(createBlock, 5);
+        updateLabels();
+
+        // regenerating blocks
+        $(".cloneMain").remove();
+        rows = 0;
+
+        // generating rows based on level
+        let startingRows =  3 + level;
+        if(startingRows>15){startingRows=15;}
+
+        for (let i = 0; i < startingRows; i++) {
+            generateRow(i);
+        }
+
+    });
+
+    $("#playAgain").click(function () {
+
+        handleGameOver();
+        initialise();
+
+    });
+
+    function initialise()
+    {
         $("#end").show();
         $("#start").hide();
+        $("#nextLevel").hide();
+        $("#gameOver").hide();
+        $("#playAgain").hide();
+
         gameOn = true;
 
         // setting the main variables
-        $("#scoreLabel").text("Score: " + score);
-        $("#levelLabel").text("Level: " + level);
-        $("#linesLabel").text("Lines: " + lines);
+        resetVar();
+        updateLabels();
 
-        $("#block2").hide();
-
+        // generating the first 4 rows
         for (let i = 0; i < 4; i++) {
             generateRow(i);
         }
 
+        rows = 0;
         // $(".block").show();
-        blockCreator = setInterval(createBlock, 500);
-    });
+        blockCreator = setInterval(createBlock, 5);
+    }
 
-    $("#end").click(function ()
+    function handleGameOver()
     {
-       gameOn = false;
-       $("#start").show();
-       $("#end").hide();
-
-
-       // $(".block").hide();
-       // $("#start").text("Start");
         clearInterval(blockCreator);
 
         clearBottomLine();
         $(".cloneMain").remove();
+        rows = 0;
 
-        resetVar();
         updateLabels();
-
-
-    });
+    }
 
     function clearBottomLine()
     {
         obj = [];
         kovi = 0;
         $(".cloneBottom").remove();
-
     }
 
     // Pause and Resume
@@ -96,7 +133,7 @@ $(document).ready(function(){
 
     function createBlock()
     {
-        //if line is full
+        //if bottomline is full - create MainLine
         if(obj.length>=15)
         {
             clearBottomLine();
@@ -105,16 +142,29 @@ $(document).ready(function(){
 
             generateRowByColor(0,rowColors);
 
+            // if we generated all the lines we wanted that level
             if(lines<0)
             {
                 lines = 0;
                 clearInterval(blockCreator);
+                $("#nextLevel").show();
+
             }
 
+            // if the main board is full -> GameOver!
+            if(rows>20)
+            {
+                clearInterval(blockCreator);
+                $("#gameOver").show();
+                $("#playAgain").show();
+                gameOn = false;
+
+            }
             updateLabels();
 
         }
 
+        // createbottomLine
         else
         {
             if(obj.length !== 0)
@@ -184,6 +234,8 @@ $(document).ready(function(){
 
     function updateLabels()
     {
+        $("#scoreLabel").text("Score: " + score);
+        $("#levelLabel").text("Level: " + level);
         $("#linesLabel").text("Lines: " + lines);
     }
     function pushUp() {

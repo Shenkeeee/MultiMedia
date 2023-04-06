@@ -2,6 +2,7 @@
 {
     padding: 0;
     margin: 0;
+    font-family: "Arial Black" , sans-serif;
 }
 
 .block
@@ -63,6 +64,44 @@ button[id="end"]
 
 }
 
+button[id="nextLevel"], button[id="gameOver"], button[id="playAgain"]
+{
+    z-index: 2;
+    padding: 0 10px;
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%,-50%);
+    height: 90px;
+    width: 130px;
+
+    text-align: center;
+    font-size: 18px;
+    display: none;
+    background: rgba(50,50,50,0.9);
+    border-radius: 10px;
+
+}
+
+button[id="playAgain"]
+{
+    top: 60%;
+    height: 60px;
+
+
+}
+button[id="gameOver"]
+{
+    top: 45%;
+    border-radius: 5px;
+    color: yellow;
+
+}
+
+#game{
+    padding-top: 20px;
+}
+
 button[id="pause"]
 {
     right: 4.2%;
@@ -79,6 +118,22 @@ button:hover
 {
     background: rgba(20,20,20,0.9);
     cursor: pointer;
+}
+button[id="nextLevel"]:hover, button[id="playAgain"]:hover
+{
+    background: rgba(20,20,20,0.95);
+}
+button[id="gameOver"]:hover
+{
+    /*no change*/
+    background: rgba(20,20,20,1);
+    cursor: initial;
+}
+button[id="gameOver"]
+{
+    /*no change*/
+    background: rgba(20,20,20,1);
+    cursor: initial;
 }
 
 label{
