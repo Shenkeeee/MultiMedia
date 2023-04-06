@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crash Down</title>
+
+    <script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js" ></script>
+    <script  src="../beadando/game.js" ></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div id="container">
+
+    <h1>Crash Down</h1>
+    <button id="start">Start</button>
+    <button id="pause">Pause</button>
+    <button id="resume">Resume</button>
+    <button id="end">End</button>
+
+    <div id="labels">
+        <label id="timeLabel">Time: 0</label>
+        <label id="scoreLabel">Score: 0</label>
+        <label id="levelLabel">Level: 1</label>
+        <label id="linesLabel">Lines: 10</label>
+    </div>
+
+    <div id="game">
+        <div id="canvas">
+
+        <div id="main">
+            <button id="nextLevel">Next Level</button>
+            <button id="gameOver">Game Over</button>
+            <button id="playAgain">Play Again</button>
+
+            <div class="row">
+                <div class="block"  id="block2" style="left: 0; bottom: 0;"></div>
+            </div>
+        </div>
+
+            <div id="bottomLine" class="row">
+                <div class="block blockBottom" id="block1"  style="left: 0; bottom: 0;"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

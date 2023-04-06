@@ -6,11 +6,15 @@ $(document).ready(function(){
     let gameOn = false;
 
     let blockCreator = 0;
+    let timeCounter = 0;
+
     let colors = ["blue", "red", "green"];
     let lines = 10;
     let level = 1;
     let score = 0;
     let blocks = [ ];
+    let time = 0;
+    let blockCreatorTimeout;
 
     // 0,1,2,3 first 4 rows. then comes in 4 to bottom. illogical but works for now.
     let rows = 0;
@@ -84,12 +88,22 @@ $(document).ready(function(){
 
         rows = 0;
         // $(".block").show();
-        blockCreator = setInterval(createBlock, 5);
+        timeCounter = setInterval(countTime, 1000)
+        blockCreatorTimeout = 50;
+        blockCreator = setInterval(createBlock, blockCreatorTimeout)
+
+    }
+
+    function countTime()
+    {
+        time++;
+        $("#timeLabel").text("Time: " + time);
     }
 
     function handleGameOver()
     {
         clearInterval(blockCreator);
+        clearInterval(timeCounter);
 
         clearBottomLine();
         $(".cloneMain").remove();
@@ -142,15 +156,6 @@ $(document).ready(function(){
 
             generateRowByColor(0,rowColors);
 
-            // if we generated all the lines we wanted that level
-            if(lines<0)
-            {
-                lines = 0;
-                clearInterval(blockCreator);
-                $("#nextLevel").show();
-
-            }
-
             // if the main board is full -> GameOver!
             if(rows>20)
             {
@@ -160,9 +165,33 @@ $(document).ready(function(){
                 gameOn = false;
 
             }
-            updateLabels();
 
+            // if we generated all the lines we wanted that level
+            else if(lines<0)
+            {
+                lines = 0;
+                clearInterval(blockCreator);
+                $("#nextLevel").show();
+
+            }
+
+            // generating next line
+            else
+            {
+                // restarting by resetting the whole.
+                // making it faster by dividing.
+                if(blockCreatorTimeout>120)
+                {
+                    blockCreatorTimeout /= 1.05;
+                }
+                console.log(blockCreatorTimeout);
+                clearInterval(blockCreator);
+                blockCreator = setInterval(createBlock, blockCreatorTimeout);
+            }
+
+            updateLabels();
         }
+
 
         // createbottomLine
         else
@@ -235,6 +264,7 @@ $(document).ready(function(){
     function updateLabels()
     {
         $("#scoreLabel").text("Score: " + score);
+        $("#timeLabel").text("Time: " + time);
         $("#levelLabel").text("Level: " + level);
         $("#linesLabel").text("Lines: " + lines);
     }
@@ -251,6 +281,7 @@ $(document).ready(function(){
         lines = 10;
         level= 1;
         score = 0;
+        time = 0;
     }
 
 });
